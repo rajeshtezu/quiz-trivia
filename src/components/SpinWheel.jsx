@@ -8,27 +8,40 @@ const SEGMENT_COLORS = [
   '#16213e', '#1a1a2e', '#533483', '#e94560',
 ];
 
+const SPIN_DURATION_MS = 4500;
+
 function getSegmentColor(index) {
   return SEGMENT_COLORS[index % SEGMENT_COLORS.length];
 }
 
 /**
  * Wheel drawn with SVG. Each segment is equal size; only unread questions are pickable.
- * No text on segments (only colors).
+ * No text on segments (only colors). Uses CSS transition so spin starts immediately on click.
  */
 export function SpinWheel({ questions, onPick, disabled }) {
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
-  const svgRef = useRef(null);
+  const pickedRef = useRef(null);
 
   const unreadIndexes = questions
     .map((q, i) => (q.isRead ? -1 : i))
     .filter((i) => i >= 0);
   const canSpin = !disabled && !spinning && unreadIndexes.length > 0;
 
+  const handleTransitionEnd = useCallback(
+    (e) => {
+      if (e.propertyName !== 'transform') return;
+      setSpinning(false);
+      if (pickedRef.current) {
+        onPick(pickedRef.current);
+        pickedRef.current = null;
+      }
+    },
+    [onPick]
+  );
+
   const spin = useCallback(() => {
     if (!canSpin) return;
-    setSpinning(true);
     const count = unreadIndexes.length;
     const randomUnreadIndex = unreadIndexes[Math.floor(Math.random() * count)];
     const segments = questions.length;
@@ -36,27 +49,10 @@ export function SpinWheel({ questions, onPick, disabled }) {
     const segmentCenterDeg = (randomUnreadIndex + 0.5) * segmentAngleDeg;
     const fullRotations = 4 + Math.random() * 3;
     const finalAngle = 360 * fullRotations + (90 - segmentCenterDeg);
-    const totalRotation = rotation + finalAngle;
-    setRotation(totalRotation);
-
-    const duration = 4000;
-    const startTime = performance.now();
-    const startRotation = rotation;
-
-    function tick(now) {
-      const elapsed = now - startTime;
-      const t = Math.min(elapsed / duration, 1);
-      const easeOut = 1 - Math.pow(1 - t, 3);
-      const current = startRotation + finalAngle * easeOut;
-      setRotation(current);
-      if (t < 1) requestAnimationFrame(tick);
-      else {
-        setSpinning(false);
-        onPick(questions[randomUnreadIndex]);
-      }
-    }
-    requestAnimationFrame(tick);
-  }, [questions, unreadIndexes, rotation, canSpin, onPick]);
+    pickedRef.current = questions[randomUnreadIndex];
+    setSpinning(true);
+    setRotation((r) => r + finalAngle);
+  }, [questions, unreadIndexes, canSpin, onPick]);
 
   if (!questions.length) {
     return (
@@ -77,11 +73,14 @@ export function SpinWheel({ questions, onPick, disabled }) {
       <div className="spin-wheel-pointer" aria-hidden />
       <div
         className="spin-wheel-wrapper"
-        style={{ '--current-rotation': `${rotation}deg` }}
+        style={{
+          '--current-rotation': `${rotation}deg`,
+          '--spin-duration': spinning ? `${SPIN_DURATION_MS}ms` : '0ms',
+        }}
       >
         <svg
-          ref={svgRef}
           className="spin-wheel-svg"
+          onTransitionEnd={handleTransitionEnd}
           viewBox="0 0 100 100"
           preserveAspectRatio="xMidYMid meet"
         >
@@ -112,16 +111,16 @@ export function SpinWheel({ questions, onPick, disabled }) {
           </g>
           <circle cx={cx} cy={cy} r={8} fill="#1a1a2e" className="center-dot" />
         </svg>
+        <button
+          type="button"
+          className="spin-button"
+          onClick={spin}
+          disabled={!canSpin}
+          aria-label="Spin wheel to pick a question"
+        >
+          {spinning ? 'Spinning…' : 'Spin'}
+        </button>
       </div>
-      <button
-        type="button"
-        className="spin-button"
-        onClick={spin}
-        disabled={!canSpin}
-        aria-label="Spin wheel to pick a question"
-      >
-        {spinning ? 'Spinning…' : 'Spin'}
-      </button>
     </div>
   );
 }

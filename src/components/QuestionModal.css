@@ -20,9 +20,10 @@
   background: var(--card-bg);
   border-radius: 1rem;
   padding: 1.5rem;
-  max-width: 520px;
-  width: 100%;
-  max-height: 85vh;
+  width: 80vw;
+  height: 80vh;
+  max-width: 80vw;
+  max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   animation: slideUp 0.25s ease-out;
@@ -74,4 +75,74 @@
   color: var(--text-muted);
   line-height: 1.6;
   white-space: pre-wrap;
+}
+
+.question-modal-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1001;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.question-modal-confirm {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.25s ease-out;
+}
+
+.question-modal-confirm-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+.question-modal-confirm-message {
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.question-modal-confirm-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.question-modal-confirm-cancel,
+.question-modal-confirm-close {
+  padding: 0.6rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.question-modal-confirm-cancel {
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.question-modal-confirm-cancel:hover {
+  opacity: 0.9;
+}
+
+.question-modal-confirm-close {
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+}
+
+.question-modal-confirm-close:hover {
+  opacity: 0.95;
 }

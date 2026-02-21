@@ -1,14 +1,24 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './QuestionModal.css';
 
 export function QuestionModal({ question, onClose }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const handleCloseRequest = () => setShowConfirm(true);
+  const handleConfirmClose = () => {
+    setShowConfirm(false);
+    onClose();
+  };
+  const handleCancelClose = () => setShowConfirm(false);
+
   useEffect(() => {
     const handleKey = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key !== 'Escape') return;
+      setShowConfirm((prev) => !prev);
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [onClose]);
+  }, []);
 
   if (!question) return null;
 
@@ -18,13 +28,12 @@ export function QuestionModal({ question, onClose }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="question-modal-title"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="question-modal">
         <button
           type="button"
           className="question-modal-close"
-          onClick={onClose}
+          onClick={handleCloseRequest}
           aria-label="Close and reset wheel"
         >
           ×
@@ -38,6 +47,40 @@ export function QuestionModal({ question, onClose }) {
           </div>
         )}
       </div>
+
+      {showConfirm && (
+        <div
+          className="question-modal-confirm-overlay"
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="confirm-title"
+        >
+          <div className="question-modal-confirm">
+            <h3 id="confirm-title" className="question-modal-confirm-title">
+              Close question?
+            </h3>
+            <p className="question-modal-confirm-message">
+              Are you sure you want to close? The wheel will be ready for the next spin.
+            </p>
+            <div className="question-modal-confirm-actions">
+              <button
+                type="button"
+                className="question-modal-confirm-cancel"
+                onClick={handleCancelClose}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="question-modal-confirm-close"
+                onClick={handleConfirmClose}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

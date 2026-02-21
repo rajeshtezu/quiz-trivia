@@ -4,6 +4,7 @@
   flex-direction: column;
   background: var(--bg);
   color: var(--text);
+  overflow: hidden;
 }
 
 .app-header {
@@ -31,7 +32,9 @@
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 .app-settings-btn:hover {
