@@ -1,0 +1,190 @@
+.settings-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1001;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.settings-modal {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.25s ease-out;
+}
+
+.settings-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.settings-modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text);
+}
+
+.settings-modal-close {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.settings-modal-close:hover {
+  background: var(--bg);
+}
+
+.settings-modal-hint {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.settings-label {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.settings-url-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.settings-input {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+
+.settings-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.settings-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.settings-remove {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.settings-remove:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.settings-remove:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.settings-add {
+  align-self: flex-start;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: var(--accent);
+  background: transparent;
+  border: 1px dashed var(--accent);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.settings-add:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.settings-error {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+.settings-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.settings-cancel,
+.settings-save {
+  padding: 0.6rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.settings-cancel {
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.settings-cancel:hover {
+  background: var(--bg);
+}
+
+.settings-save {
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+}
+
+.settings-save:hover:not(:disabled) {
+  opacity: 0.95;
+}
+
+.settings-save:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
